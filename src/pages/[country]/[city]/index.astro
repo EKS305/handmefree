@@ -1,9 +1,15 @@
 ---
-const country = "Germany";
-const city = "Berlin";
+const { country, city } = Astro.params;
 
-const title = `Free items in ${city} – Give & take for free | HandMeFree`;
-const description = `Find free items in ${city}, ${country}. Give things away or get items for free locally and anonymously on HandMeFree.`;
+// Simple normalization (SEO-friendly display)
+const cityName = city.charAt(0).toUpperCase() + city.slice(1);
+const countryName =
+  country === "de" ? "Germany" :
+  country === "fr" ? "France" :
+  country.toUpperCase();
+
+const title = `Free items in ${cityName} | HandMeFree`;
+const description = `Find free items in ${cityName}, ${countryName}. Give things away or get items for free locally and anonymously on HandMeFree.`;
 ---
 
 <!DOCTYPE html>
@@ -26,24 +32,20 @@ const description = `Find free items in ${city}, ${country}. Give things away or
     <main style="max-width: 720px; margin: 4rem auto; font-family: system-ui;">
       <nav>
         <a href="/">Home</a> ›
-        <a href="/de/">Germany</a> ›
-        <span>Berlin</span>
+        <a href={`/${country}/`}>{countryName}</a> ›
+        <span>{cityName}</span>
       </nav>
 
-      <h1>Free items in Berlin</h1>
+      <h1>Free items in {cityName}</h1>
 
       <p>
-        Welcome to <strong>HandMeFree Berlin</strong>.
-        Here people give items away for free in Berlin — locally and anonymously.
+        Welcome to <strong>HandMeFree {cityName}</strong>.  
+        Here people give items away for free — locally and anonymously.
       </p>
 
       <p>
         Browse available items or post something you want to give away.
         No accounts. No payments. No profiles.
-      </p>
-
-      <p>
-        This page will list all free items available in Berlin.
       </p>
     </main>
   </body>
