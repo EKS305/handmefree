@@ -1,0 +1,49 @@
+---
+const country = "Germany";
+
+const title = `Free items in ${country} | HandMeFree`;
+const description = `Give and get free items in ${country}. Browse cities and find free stuff locally on HandMeFree — no accounts, no payments.`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+
+  <body>
+    <main style="max-width: 720px; margin: 4rem auto; font-family: system-ui;">
+      <nav>
+        <a href="/">Home</a> ›
+        <span>Germany</span>
+      </nav>
+
+      <h1>Free items in Germany</h1>
+
+      <p>
+        HandMeFree helps people give items away for free across Germany —
+        locally and anonymously.
+      </p>
+
+      <h2>Browse cities</h2>
+      <ul>
+        <li><a href="/de/berlin/">Berlin</a></li>
+        <!-- Future cities go here -->
+      </ul>
+
+      <p>
+        No accounts. No profiles. No payments.
+      </p>
+    </main>
+  </body>
+</html>
