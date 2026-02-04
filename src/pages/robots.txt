@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://handmefree.pages.dev/sitemap.xml
