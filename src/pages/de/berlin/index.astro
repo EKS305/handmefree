@@ -1,0 +1,50 @@
+---
+const country = "Germany";
+const city = "Berlin";
+
+const title = `Free items in ${city} – Give & take for free | HandMeFree`;
+const description = `Find free items in ${city}, ${country}. Give things away or get items for free locally and anonymously on HandMeFree.`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+  </head>
+
+  <body>
+    <main style="max-width: 720px; margin: 4rem auto; font-family: system-ui;">
+      <nav>
+        <a href="/">Home</a> ›
+        <a href="/de/">Germany</a> ›
+        <span>Berlin</span>
+      </nav>
+
+      <h1>Free items in Berlin</h1>
+
+      <p>
+        Welcome to <strong>HandMeFree Berlin</strong>.
+        Here people give items away for free in Berlin — locally and anonymously.
+      </p>
+
+      <p>
+        Browse available items or post something you want to give away.
+        No accounts. No payments. No profiles.
+      </p>
+
+      <p>
+        This page will list all free items available in Berlin.
+      </p>
+    </main>
+  </body>
+</html>
