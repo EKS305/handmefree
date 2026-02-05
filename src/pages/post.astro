@@ -1,10 +1,6 @@
----
-export const prerender = false;
----
-
 <h1>Give something away</h1>
 
-<form method="post">
+<form id="postForm">
   <label>
     Item title<br />
     <input
@@ -37,3 +33,32 @@ export const prerender = false;
 <p style="margin-top:1rem; color:#666;">
   Images will be added later.
 </p>
+
+<script>
+  const form = document.getElementById("postForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const payload = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+    };
+
+    const res = await fetch("/api/post-item", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const json = await res.json();
+
+    if (json.ok) {
+      alert("Item posted (temporary)");
+      form.reset();
+    } else {
+      alert(json.error || "Error");
+    }
+  });
+</script>
