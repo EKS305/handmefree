@@ -34,13 +34,22 @@
   Images will be added later.
 </p>
 
-<script>
+<script type="module">
+  console.log("post.js loaded");
+
   const form = document.getElementById("postForm");
+
+  if (!form) {
+    alert("Form not found");
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    alert("Submitting form"); // <-- THIS MUST SHOW
+
     const formData = new FormData(form);
+
     const payload = {
       title: formData.get("title"),
       description: formData.get("description"),
