@@ -52,19 +52,25 @@ const title = "Give something away";
 
     try {
       const res = await fetch(
-        "https://handmefree-api.ehsankarimi27.workers.dev",
+        "https://handmefree-post-item.ehsankarimi27.workers.dev",
         {
           method: "POST",
           body: data,
         }
       );
 
-      const text = await res.text();
-      result.textContent = text;
-      result.style.color = "green";
-      form.reset();
+      const json = await res.json();
+
+      if (json.success) {
+        result.textContent = json.message;
+        result.style.color = "green";
+        form.reset();
+      } else {
+        result.textContent = json.error || "Error";
+        result.style.color = "red";
+      }
     } catch (err) {
-      result.textContent = "Something went wrong.";
+      result.textContent = "Network error";
       result.style.color = "red";
     }
   });
