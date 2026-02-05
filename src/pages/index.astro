@@ -1,45 +1,53 @@
 ---
 export const prerender = false;
-const title = "HandMeFree – Give items away for free in your city";
-const description =
-  "HandMeFree is a free, anonymous platform where people give items away locally. No accounts, no money, just reuse.";
 ---
 
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>{title}</title>
-    <meta name="description" content={description} />
-
-    <!-- Basic SEO -->
-    <meta name="robots" content="index, follow" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-
+    <title>HandMeFree – Upload Test</title>
   </head>
+
   <body>
-    <main style="max-width: 720px; margin: 4rem auto; font-family: system-ui;">
-      <h1>Give items away for free — locally & anonymously</h1>
+    <h1>HandMeFree – Image moderation test</h1>
 
-      <p>
-        <strong>HandMeFree</strong> helps people give items away for free in their city.
-        No accounts. No profiles. No payments.
-      </p>
+    <input type="file" accept="image/*" id="imageInput" />
+    <p id="result"></p>
 
-      <p>
-        Post what you want to give, people nearby show interest, and you choose
-        who gets it. Simple, local, and anonymous.
-      </p>
+    <script>
+      const input = document.getElementById("imageInput");
+      const result = document.getElementById("result");
 
-      <p>
-        This project is currently in early development.
-      </p>
-    </main>
+      input.addEventListener("change", async () => {
+        const file = input.files[0];
+        if (!file) return;
+
+        result.textContent = "Checking image…";
+
+        const form = new FormData();
+        form.append("image", file);
+
+        try {
+          const res = await fetch(
+            "https://handmefree-api.ehsankarimi27.workers.dev",
+            {
+              method: "POST",
+              body: form,
+            }
+          );
+
+          const data = await res.json();
+
+          if (data.allowed) {
+            result.textContent = "✅ Image allowed. You can continue.";
+          } else {
+            result.textContent = "❌ Blocked: " + data.reason;
+            input.value = ""; // reset file input
+          }
+        } catch (err) {
+          result.textContent = "⚠️ Error checking image.";
+        }
+      });
+    </script>
   </body>
 </html>
