@@ -8,12 +8,9 @@ export const onRequestPost: PagesFunction = async ({ request }) => {
     return new Response("Missing fields", { status: 400 });
   }
 
-  // TEMPORARY: log only (no DB yet)
-  console.log("NEW ITEM");
-  console.log("Title:", title);
-  console.log("Description:", description);
+  // TEMP: no database yet
+  console.log("ITEM POSTED:", { title, description });
 
-  // ✅ Redirect back to form with success flag
-  return Response.redirect("/post?ok=1", 303);
+  // 🔑 THIS IS THE FIX
+  return Response.redirect("/post/success", 303);
 };
-
