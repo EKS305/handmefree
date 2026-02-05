@@ -1,6 +1,10 @@
+---
+export const prerender = false;
+---
+
 <h1>Give something away</h1>
 
-<form id="postForm">
+<form method="post" action="/api/post-item">
   <label>
     Item title<br />
     <input
@@ -33,41 +37,3 @@
 <p style="margin-top:1rem; color:#666;">
   Images will be added later.
 </p>
-
-<script type="module">
-  console.log("post.js loaded");
-
-  const form = document.getElementById("postForm");
-
-  if (!form) {
-    alert("Form not found");
-  }
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    alert("Submitting form"); // <-- THIS MUST SHOW
-
-    const formData = new FormData(form);
-
-    const payload = {
-      title: formData.get("title"),
-      description: formData.get("description"),
-    };
-
-    const res = await fetch("/api/post-item", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const json = await res.json();
-
-    if (json.ok) {
-      alert("Item posted (temporary)");
-      form.reset();
-    } else {
-      alert(json.error || "Error");
-    }
-  });
-</script>
