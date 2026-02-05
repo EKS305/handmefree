@@ -1,80 +1,39 @@
 ---
-const title = "Post a free item | HandMeFree";
+const title = "Give something away";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>{title}</title>
-  </head>
+<h1>Give something away</h1>
 
-  <body>
-    <h1>Give something away</h1>
+<form method="post" action="/api/post-item">
+  <label>
+    Item title<br />
+    <input
+      type="text"
+      name="title"
+      required
+      maxlength="80"
+      placeholder="e.g. Wooden chair"
+    />
+  </label>
 
-    <form id="postForm">
-      <label>
-        Item title<br />
-        <input
-          type="text"
-          name="title"
-          required
-          maxlength="80"
-          placeholder="e.g. Wooden chair"
-        />
-      </label>
+  <br /><br />
 
-      <br /><br />
+  <label>
+    Short description<br />
+    <textarea
+      name="description"
+      required
+      maxlength="300"
+      rows="4"
+      placeholder="Condition, pickup details, anything important…"
+    ></textarea>
+  </label>
 
-      <label>
-        Short description<br />
-        <textarea
-          name="description"
-          required
-          maxlength="300"
-          rows="4"
-          placeholder="Condition, pickup details, anything important…"
-        ></textarea>
-      </label>
+  <br /><br />
 
-      <br /><br />
+  <button type="submit">Post item</button>
+</form>
 
-      <button type="submit">Post item</button>
-    </form>
-
-    <p id="result" style="margin-top:1rem;"></p>
-
-    <p style="margin-top:1rem; color:#666;">
-      Images will be added later.
-    </p>
-
-    <script>
-      const form = document.getElementById("postForm");
-      const result = document.getElementById("result");
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        result.textContent = "Posting…";
-
-        const data = new FormData(form);
-
-        try {
-          const res = await fetch(
-            "https://handmefree-api.ehsankarimi27.workers.dev",
-            {
-              method: "POST",
-              body: data,
-            }
-          );
-
-          const text = await res.text();
-          result.textContent = text;
-          result.style.color = "green";
-          form.reset();
-        } catch (err) {
-          result.textContent = "Something went wrong.";
-          result.style.color = "red";
-        }
-      });
-    </script>
-  </body>
-</html>
+<p style="margin-top:1rem; color:#666;">
+  Images will be added later.
+</p>
