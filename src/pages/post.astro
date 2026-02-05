@@ -1,0 +1,39 @@
+---
+export const prerender = false;
+---
+
+<h1>Give something away</h1>
+
+<form method="post">
+  <label>
+    Item title<br />
+    <input
+      type="text"
+      name="title"
+      required
+      maxlength="80"
+      placeholder="e.g. Wooden chair"
+    />
+  </label>
+
+  <br /><br />
+
+  <label>
+    Short description<br />
+    <textarea
+      name="description"
+      required
+      maxlength="300"
+      rows="4"
+      placeholder="Condition, pickup details, anything important…"
+    ></textarea>
+  </label>
+
+  <br /><br />
+
+  <button type="submit">Post item</button>
+</form>
+
+<p style="margin-top:1rem; color:#666;">
+  Images will be added later.
+</p>
