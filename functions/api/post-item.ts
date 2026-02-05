@@ -8,12 +8,12 @@ export const onRequestPost: PagesFunction = async ({ request }) => {
     return new Response("Missing fields", { status: 400 });
   }
 
-  // TEMPORARY: log instead of saving
-  console.log("New item posted:", {
-    title,
-    description,
-  });
-
-  // Redirect to confirmation page
-  return Response.redirect("/post/success", 303);
+  // TEMPORARY: just confirm it works
+  return new Response(
+    `Item posted (temporary)\n\nTitle: ${title}\nDescription: ${description}`,
+    {
+      headers: { "Content-Type": "text/plain" },
+    }
+  );
 };
+
