@@ -1,8 +1,16 @@
 ---
+const ok = Astro.url.searchParams.get("ok");
 export const prerender = false;
 ---
 
 <h1>Give something away</h1>
+
+{ok && (
+  <p style="color: green; font-weight: bold;">
+    Item posted (temporary)
+  </p>
+)}
+
 
 <form method="post" action="/api/post-item">
   <label>

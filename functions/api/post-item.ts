@@ -8,12 +8,12 @@ export const onRequestPost: PagesFunction = async ({ request }) => {
     return new Response("Missing fields", { status: 400 });
   }
 
-  // TEMPORARY: just confirm it works
-  return new Response(
-    `Item posted (temporary)\n\nTitle: ${title}\nDescription: ${description}`,
-    {
-      headers: { "Content-Type": "text/plain" },
-    }
-  );
+  // TEMPORARY: log only (no DB yet)
+  console.log("NEW ITEM");
+  console.log("Title:", title);
+  console.log("Description:", description);
+
+  // ✅ Redirect back to form with success flag
+  return Response.redirect("/post?ok=1", 303);
 };
 
