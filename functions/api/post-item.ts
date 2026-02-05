@@ -1,21 +1,32 @@
-export const onRequestPost: PagesFunction = async ({ request }) => {
-  const formData = await request.formData();
+export const onRequest: PagesFunction = async ({ request }) => {
+  if (request.method !== "POST") {
+    return new Response("Method Not Allowed", { status: 405 });
+  }
 
+  const formData = await request.formData();
   const title = formData.get("title");
   const description = formData.get("description");
 
-  if (!title || !description) {
-    return new Response("Missing fields", { status: 400 });
+  if (
+    typeof title !== "string" ||
+    typeof description !== "string" ||
+    !title.trim() ||
+    !description.trim()
+  ) {
+    return new Response("Invalid input", { status: 400 });
   }
 
-  // TEMPORARY: no database yet
-  // Just confirm it works
-  return new Response(
-    `Item posted (temporary)\n\nTitle: ${title}\nDescription: ${description}`,
-    {
-      headers: {
-        "Content-Type": "text/plain",
-      },
-    }
-  );
+  // TEMPORARY: log instead of saving to DB
+  console.log("NEW ITEM POSTED:", {
+    title,
+    description,
+  });
+
+  // ✅ REDIRECT after successful submit
+  return new Response(null, {
+    status: 303,
+    headers: {
+      Location: "/post/success",
+    },
+  });
 };
