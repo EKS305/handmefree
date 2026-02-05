@@ -1,9 +1,6 @@
-export const onRequest: PagesFunction = async ({ request }) => {
-  if (request.method !== "POST") {
-    return new Response("Method Not Allowed", { status: 405 });
-  }
-
+export const onRequestPost: PagesFunction = async ({ request }) => {
   const formData = await request.formData();
+
   const title = formData.get("title");
   const description = formData.get("description");
 
@@ -13,20 +10,13 @@ export const onRequest: PagesFunction = async ({ request }) => {
     !title.trim() ||
     !description.trim()
   ) {
-    return new Response("Invalid input", { status: 400 });
+    return new Response("Invalid submission", { status: 400 });
   }
 
-  // TEMPORARY: log instead of saving to DB
-  console.log("NEW ITEM POSTED:", {
-    title,
-    description,
-  });
+  // TEMPORARY: log only (no DB yet)
+  console.log("NEW ITEM:", { title, description });
 
-  // ✅ REDIRECT after successful submit
-  return new Response(null, {
-    status: 303,
-    headers: {
-      Location: "/post/success",
-    },
-  });
+  // ✅ IMPORTANT PART:
+  // Redirect after successful POST
+  return Response.redirect("/post/success", 303);
 };
