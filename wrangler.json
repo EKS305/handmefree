@@ -1,0 +1,11 @@
+{
+  "name": "handmefree",
+  "compatibility_date": "2026-02-05",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "handmefree-db",
+      "database_id": "d7589d5d-436d-4173-9837-1d5fa95325ad"
+    }
+  ]
+}
