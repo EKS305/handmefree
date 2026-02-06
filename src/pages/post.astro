@@ -2,17 +2,17 @@
 ---
 <h1>Give something away</h1>
 
-<form method="POST" action="https://handmefree-post-item.ehsankarimi27.workers.dev">
+<form id="post-item-form">
   <label>
     Item title<br />
-    <input name="title" required />
+    <input id="title" name="title" required />
   </label>
 
   <br /><br />
 
   <label>
     Short description<br />
-    <textarea name="description" required></textarea>
+    <textarea id="description" name="description" required></textarea>
   </label>
 
   <br /><br />
@@ -21,3 +21,6 @@
 </form>
 
 <p>Images will be added later.</p>
+
+<!-- IMPORTANT: this connects the form to the Worker -->
+<script src="/post-item.js"></script>
