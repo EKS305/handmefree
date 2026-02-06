@@ -1,0 +1,39 @@
+---
+const API_URL = "https://handmefree-post-item.ehsankarimi27.workers.dev/items";
+
+let items = [];
+let error = null;
+
+try {
+  const res = await fetch(API_URL);
+  const data = await res.json();
+
+  if (!data.ok) {
+    throw new Error(data.error || "API error");
+  }
+
+  items = data.items ?? [];
+} catch (err) {
+  error = "Failed to load items";
+}
+---
+
+<h1>Available items</h1>
+
+{error && <p style="color:red">{error}</p>}
+
+{items.length === 0 && !error && (
+  <p>No items yet.</p>
+)}
+
+<ul>
+  {items.map((item) => (
+    <li>
+      <h3>{item.title}</h3>
+      <p>{item.description}</p>
+      <small>
+        Posted: {new Date(item.createdAt).toLocaleString()}
+      </small>
+    </li>
+  ))}
+</ul>
