@@ -1,11 +1,14 @@
 ---
 const { id } = Astro.params;
 
-const API = "https://handmefree-post-item.ehsankarimi27.workers.dev";
+// ✅ Pages API (items live here)
+const ITEMS_API = "/api/items";
+
+// ✅ Worker API (images live here)
+const UPLOAD_API = "https://handmefree-post-item.ehsankarimi27.workers.dev";
 
 /**
- * MUST be your R2 Public Development URL
- * Cloudflare → R2 → handmefree-images → Settings → Enable Public Dev URL
+ * R2 Public Development URL
  */
 const R2_BASE = "https://pub-3750308ca5f9464a97ba881a8b7f9734.r2.dev";
 
@@ -13,7 +16,7 @@ let item = null;
 let error = null;
 
 try {
-  const res = await fetch(`${API}/item?id=${id}`);
+  const res = await fetch(`${ITEMS_API}?id=${id}`);
   const data = await res.json();
   if (!data.ok) throw new Error();
   item = data.item;
@@ -55,7 +58,7 @@ try {
 
     <form
       id="uploadForm"
-      data-api={API}
+      data-api={UPLOAD_API}
       data-item-id={id}
     >
       <input type="file" name="image" required />
