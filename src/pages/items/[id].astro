@@ -2,13 +2,6 @@
 const { id } = Astro.params;
 
 const API = "https://handmefree-post-item.ehsankarimi27.workers.dev";
-
-/**
- * IMPORTANT:
- * This MUST be your R2 Public Development URL (or custom domain)
- * You ENABLE this in:
- * Cloudflare → R2 → handmefree-images → Settings → Public Development URL
- */
 const R2_BASE = "https://pub-3750308ca5f9464a97ba881a8b7f9734.r2.dev";
 
 let item = null;
@@ -17,7 +10,6 @@ let error = null;
 try {
   const res = await fetch(`${API}/item?id=${id}`);
   const data = await res.json();
-
   if (!data.ok) throw new Error();
   item = data.item;
 } catch {
@@ -37,14 +29,14 @@ try {
 
     <h3>Images</h3>
 
-    {item.images && item.images.length > 0 ? (
+    {item.images?.length ? (
       <div style="display:flex;gap:12px;flex-wrap:wrap">
         {item.images.map((key) => (
           <img
             src={`${R2_BASE}/${key}`}
             width="200"
-            style="border:1px solid #ccc"
             loading="lazy"
+            style="border:1px solid #ccc"
           />
         ))}
       </div>
@@ -56,36 +48,26 @@ try {
 
     <h3>Add an image</h3>
 
-    <form id="uploadForm" data-item-id={id}>
+    <form id="uploadForm" data-id={id}>
       <input type="file" name="image" required />
-      <button type="submit">Upload image</button>
+      <button>Upload image</button>
     </form>
 
     <script>
       const form = document.getElementById("uploadForm");
-      const itemId = form.dataset.itemId;
-
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-
         const fd = new FormData(form);
-        fd.append("itemId", itemId);
+        fd.append("itemId", form.dataset.id);
 
-        const res = await fetch(
-          "https://handmefree-post-item.ehsankarimi27.workers.dev/upload-image",
-          {
-            method: "POST",
-            body: fd,
-          }
-        );
+        const res = await fetch(`${API}/upload-image`, {
+          method: "POST",
+          body: fd,
+        });
 
         const data = await res.json();
-
-        if (!data.ok) {
-          alert("Upload failed");
-        } else {
-          location.reload();
-        }
+        if (!data.ok) alert(data.error || "Upload failed");
+        else location.reload();
       });
     </script>
   </>
