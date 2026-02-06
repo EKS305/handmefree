@@ -1,32 +1,16 @@
----
-const API_URL = "https://handmefree-post-item.ehsankarimi27.workers.dev";
----
-
 <h1>Give something away</h1>
 
-<form method="post" action={API_URL}>
+<form method="POST" action="/api/post-item">
   <label>
     Item title<br />
-    <input
-      type="text"
-      name="title"
-      required
-      maxlength="80"
-      placeholder="e.g. Wooden chair"
-    />
+    <input name="title" required maxlength="80" />
   </label>
 
   <br /><br />
 
   <label>
     Short description<br />
-    <textarea
-      name="description"
-      required
-      maxlength="300"
-      rows="4"
-      placeholder="Condition, pickup details, anything important…"
-    ></textarea>
+    <textarea name="description" required maxlength="300"></textarea>
   </label>
 
   <br /><br />
@@ -34,6 +18,4 @@ const API_URL = "https://handmefree-post-item.ehsankarimi27.workers.dev";
   <button type="submit">Post item</button>
 </form>
 
-<p style="margin-top:1rem; color:#666;">
-  Images will be added later.
-</p>
+<p>Images will be added later.</p>
