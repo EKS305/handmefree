@@ -2,17 +2,17 @@
 ---
 <h1>Give something away</h1>
 
-<form id="post-item-form">
+<form method="POST" action="/api/post-item">
   <label>
     Item title<br />
-    <input id="title" name="title" required />
+    <input name="title" required />
   </label>
 
   <br /><br />
 
   <label>
     Short description<br />
-    <textarea id="description" name="description" required></textarea>
+    <textarea name="description" required></textarea>
   </label>
 
   <br /><br />
@@ -21,6 +21,3 @@
 </form>
 
 <p>Images will be added later.</p>
-
-<!-- IMPORTANT: this connects the form to the Worker -->
-<script src="/post-item.js" is:inline></script>
