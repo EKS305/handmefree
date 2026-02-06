@@ -1,6 +1,7 @@
 ---
 const { id } = Astro.params;
 const API = "https://handmefree-post-item.ehsankarimi27.workers.dev";
+const R2_BASE = "https://handmefree-images.r2.dev";
 
 let item = null;
 let error = null;
@@ -22,6 +23,24 @@ try {
     <h1>{item.title}</h1>
     <p>{item.description}</p>
     <small>Posted: {new Date(item.createdAt).toLocaleString()}</small>
+
+    <hr />
+
+    <h3>Images</h3>
+
+    {item.images && item.images.length > 0 ? (
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        {item.images.map((key) => (
+          <img
+            src={`${R2_BASE}/${key}`}
+            width="200"
+            style="border:1px solid #ccc"
+          />
+        ))}
+      </div>
+    ) : (
+      <p>No images yet</p>
+    )}
 
     <hr />
 
@@ -52,17 +71,12 @@ try {
           body: fd,
         });
 
-        if (!res.ok) {
-          alert("Upload failed (network)");
-          return;
-        }
-
         const data = await res.json();
 
         if (!data.ok) {
-          alert("Upload failed (server)");
+          alert("Upload failed");
         } else {
-          alert("Image uploaded successfully");
+          location.reload();
         }
       });
     </script>
