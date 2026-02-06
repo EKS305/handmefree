@@ -1,9 +1,10 @@
+---
+const API_URL = "https://handmefree-post-item.ehsankarimi27.workers.dev";
+---
+
 <h1>Give something away</h1>
 
-<form
-  method="post"
-  action="https://handmefree-post-item.ehsankarimi27.workers.dev"
->
+<form method="post" action={API_URL}>
   <label>
     Item title<br />
     <input
