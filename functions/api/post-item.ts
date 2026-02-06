@@ -10,21 +10,20 @@ export const onRequestPost: PagesFunction = async ({ request, env }) => {
       return new Response("Missing fields", { status: 400 });
     }
 
-    // ✅ CREATE REAL ITEM
+    // ✅ CREATE ITEM (this was missing before)
     const id = crypto.randomUUID();
 
     const item = {
-      id,                 // UUID (PRIMARY KEY)
-      title,              // Display only
+      id,
+      title,
       description,
       images: [],
       createdAt: new Date().toISOString(),
     };
 
-    // ✅ STORE IN KV
     await env.KV.put(id, JSON.stringify(item));
 
-    // ✅ REDIRECT TO ITEM PAGE USING UUID
+    // ✅ KEEP OLD BEHAVIOR (redirect)
     return new Response(null, {
       status: 302,
       headers: {
