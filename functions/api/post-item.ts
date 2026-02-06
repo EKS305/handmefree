@@ -10,7 +10,6 @@ export const onRequestPost: PagesFunction = async ({ request, env }) => {
       return new Response("Missing fields", { status: 400 });
     }
 
-    // ✅ CREATE ITEM (this was missing before)
     const id = crypto.randomUUID();
 
     const item = {
@@ -23,14 +22,13 @@ export const onRequestPost: PagesFunction = async ({ request, env }) => {
 
     await env.KV.put(id, JSON.stringify(item));
 
-    // ✅ KEEP OLD BEHAVIOR (redirect)
     return new Response(null, {
       status: 302,
       headers: {
         Location: `/items/${id}`,
       },
     });
-  } catch (err) {
+  } catch {
     return new Response("Internal error", { status: 500 });
   }
 };
