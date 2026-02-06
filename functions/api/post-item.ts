@@ -12,21 +12,20 @@ export const onRequestPost: PagesFunction = async ({ request, env }) => {
 
     const id = crypto.randomUUID();
 
-    const item = {
+    await env.KV.put(
       id,
-      title,
-      description,
-      images: [],
-      createdAt: new Date().toISOString(),
-    };
-
-    await env.KV.put(id, JSON.stringify(item));
+      JSON.stringify({
+        id,
+        title,
+        description,
+        images: [],
+        createdAt: new Date().toISOString(),
+      })
+    );
 
     return new Response(null, {
       status: 302,
-      headers: {
-        Location: `/items/${id}`,
-      },
+      headers: { Location: `/items/${id}` },
     });
   } catch {
     return new Response("Internal error", { status: 500 });
