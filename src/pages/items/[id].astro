@@ -1,0 +1,31 @@
+---
+const { id } = Astro.params;
+
+const API_URL =
+  "https://handmefree-post-item.ehsankarimi27.workers.dev/item?id=" + id;
+
+let item = null;
+let error = null;
+
+try {
+  const res = await fetch(API_URL);
+  const data = await res.json();
+
+  if (!data.ok) throw new Error("Not found");
+  item = data.item;
+} catch {
+  error = "Item not found";
+}
+---
+
+{error && <p style="color:red">{error}</p>}
+
+{item && (
+  <>
+    <h1>{item.title}</h1>
+    <p>{item.description}</p>
+    <small>
+      Posted: {new Date(item.createdAt).toLocaleString()}
+    </small>
+  </>
+)}

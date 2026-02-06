@@ -29,7 +29,7 @@ try {
 <ul>
   {items.map((item) => (
     <li>
-      <h3>{item.title}</h3>
+      <h3><a href={`/items/${item.id}`}>{item.title}</a></h3>
       <p>{item.description}</p>
       <small>
         Posted: {new Date(item.createdAt).toLocaleString()}
