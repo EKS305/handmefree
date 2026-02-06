@@ -1,17 +1,14 @@
 ---
 const { id } = Astro.params;
-
-const API_URL =
-  "https://handmefree-post-item.ehsankarimi27.workers.dev/item?id=" + id;
+const API = "https://handmefree-post-item.ehsankarimi27.workers.dev";
 
 let item = null;
 let error = null;
 
 try {
-  const res = await fetch(API_URL);
+  const res = await fetch(`${API}/item?id=${id}`);
   const data = await res.json();
-
-  if (!data.ok) throw new Error("Not found");
+  if (!data.ok) throw new Error();
   item = data.item;
 } catch {
   error = "Item not found";
@@ -24,69 +21,39 @@ try {
   <>
     <h1>{item.title}</h1>
     <p>{item.description}</p>
-    <small>
-      Posted: {new Date(item.createdAt).toLocaleString()}
-    </small>
+    <small>Posted: {new Date(item.createdAt).toLocaleString()}</small>
 
     <hr />
 
     <h3>Add an image</h3>
 
-    <form id="image-upload-form">
-      <input
-        type="file"
-        id="image"
-        accept="image/*"
-        required
-      />
-      <br /><br />
+    <form id="uploadForm">
+      <input type="file" name="image" required />
       <button type="submit">Upload image</button>
-      <p id="upload-status"></p>
     </form>
-  </>
-)}
 
-<script is:inline>
-  const form = document.getElementById("image-upload-form");
-  if (form) {
-    const status = document.getElementById("upload-status");
+    <script>
+      const form = document.getElementById("uploadForm");
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      status.textContent = "";
-      status.style.color = "";
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-      const fileInput = document.getElementById("image");
-      if (!fileInput.files.length) return;
+        const fd = new FormData(form);
+        fd.append("itemId", "{id}");
 
-      const formData = new FormData();
-      formData.append("image", fileInput.files[0]);
-      formData.append("itemId", "{id}");
-
-      try {
-        const res = await fetch(
-          "https://handmefree-post-item.ehsankarimi27.workers.dev/upload-image",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
+        const res = await fetch("{API}/upload-image", {
+          method: "POST",
+          body: fd,
+        });
 
         const data = await res.json();
-
         if (!data.ok) {
-          status.style.color = "red";
-          status.textContent = data.error || "Upload failed";
-          return;
+          alert("Upload failed");
+        } else {
+          alert("Image uploaded");
+          location.reload();
         }
-
-        status.style.color = "green";
-        status.textContent = "Image uploaded successfully";
-        fileInput.value = "";
-      } catch {
-        status.style.color = "red";
-        status.textContent = "Network error. Try again.";
-      }
-    });
-  }
-</script>
+      });
+    </script>
+  </>
+)}
