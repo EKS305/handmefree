@@ -27,31 +27,42 @@ try {
 
     <h3>Add an image</h3>
 
-    <form id="uploadForm">
+    <form
+      id="uploadForm"
+      data-item-id={id}
+      data-api={API}
+    >
       <input type="file" name="image" required />
       <button type="submit">Upload image</button>
     </form>
 
     <script>
       const form = document.getElementById("uploadForm");
+      const api = form.dataset.api;
+      const itemId = form.dataset.itemId;
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const fd = new FormData(form);
-        fd.append("itemId", "{id}");
+        fd.append("itemId", itemId);
 
-        const res = await fetch("{API}/upload-image", {
+        const res = await fetch(`${api}/upload-image`, {
           method: "POST",
           body: fd,
         });
 
+        if (!res.ok) {
+          alert("Upload failed (network)");
+          return;
+        }
+
         const data = await res.json();
+
         if (!data.ok) {
-          alert("Upload failed");
+          alert("Upload failed (server)");
         } else {
-          alert("Image uploaded");
-          location.reload();
+          alert("Image uploaded successfully");
         }
       });
     </script>
