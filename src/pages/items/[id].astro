@@ -2,6 +2,11 @@
 const { id } = Astro.params;
 
 const API = "https://handmefree-post-item.ehsankarimi27.workers.dev";
+
+/**
+ * MUST be your R2 Public Development URL
+ * Cloudflare → R2 → handmefree-images → Settings → Enable Public Dev URL
+ */
 const R2_BASE = "https://pub-3750308ca5f9464a97ba881a8b7f9734.r2.dev";
 
 let item = null;
@@ -29,7 +34,7 @@ try {
 
     <h3>Images</h3>
 
-    {item.images?.length ? (
+    {item.images && item.images.length > 0 ? (
       <div style="display:flex;gap:12px;flex-wrap:wrap">
         {item.images.map((key) => (
           <img
@@ -48,26 +53,38 @@ try {
 
     <h3>Add an image</h3>
 
-    <form id="uploadForm" data-id={id}>
+    <form
+      id="uploadForm"
+      data-api={API}
+      data-item-id={id}
+    >
       <input type="file" name="image" required />
-      <button>Upload image</button>
+      <button type="submit">Upload image</button>
     </form>
 
     <script>
       const form = document.getElementById("uploadForm");
+      const api = form.dataset.api;
+      const itemId = form.dataset.itemId;
+
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const fd = new FormData(form);
-        fd.append("itemId", form.dataset.id);
 
-        const res = await fetch(`${API}/upload-image`, {
+        const fd = new FormData(form);
+        fd.append("itemId", itemId);
+
+        const res = await fetch(`${api}/upload-image`, {
           method: "POST",
           body: fd,
         });
 
         const data = await res.json();
-        if (!data.ok) alert(data.error || "Upload failed");
-        else location.reload();
+
+        if (!data.ok) {
+          alert(data.error || "Upload failed");
+        } else {
+          location.reload();
+        }
       });
     </script>
   </>
