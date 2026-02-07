@@ -1,6 +1,15 @@
 ---
 const { id } = Astro.params;
+
 const API = "https://handmefree-post-item.ehsankarimi27.workers.dev";
+
+/**
+ * IMPORTANT:
+ * This MUST be your R2 Public Development URL (or custom domain)
+ * You ENABLE this in:
+ * Cloudflare → R2 → handmefree-images → Settings → Public Development URL
+ */
+const R2_BASE = "https://pub-xxxxxxxx.r2.dev";
 
 let item = null;
 let error = null;
@@ -8,6 +17,7 @@ let error = null;
 try {
   const res = await fetch(`${API}/item?id=${id}`);
   const data = await res.json();
+
   if (!data.ok) throw new Error();
   item = data.item;
 } catch {
@@ -25,20 +35,34 @@ try {
 
     <hr />
 
+    <h3>Images</h3>
+
+    {item.images && item.images.length > 0 ? (
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        {item.images.map((key) => (
+          <img
+            src={`${R2_BASE}/${key}`}
+            width="200"
+            style="border:1px solid #ccc"
+            loading="lazy"
+          />
+        ))}
+      </div>
+    ) : (
+      <p>No images yet</p>
+    )}
+
+    <hr />
+
     <h3>Add an image</h3>
 
-    <form
-      id="uploadForm"
-      data-item-id={id}
-      data-api={API}
-    >
+    <form id="uploadForm" data-item-id={id}>
       <input type="file" name="image" required />
       <button type="submit">Upload image</button>
     </form>
 
     <script>
       const form = document.getElementById("uploadForm");
-      const api = form.dataset.api;
       const itemId = form.dataset.itemId;
 
       form.addEventListener("submit", async (e) => {
@@ -47,22 +71,20 @@ try {
         const fd = new FormData(form);
         fd.append("itemId", itemId);
 
-        const res = await fetch(`${api}/upload-image`, {
-          method: "POST",
-          body: fd,
-        });
-
-        if (!res.ok) {
-          alert("Upload failed (network)");
-          return;
-        }
+        const res = await fetch(
+          "https://handmefree-post-item.ehsankarimi27.workers.dev/upload-image",
+          {
+            method: "POST",
+            body: fd,
+          }
+        );
 
         const data = await res.json();
 
         if (!data.ok) {
-          alert("Upload failed (server)");
+          alert("Upload failed");
         } else {
-          alert("Image uploaded successfully");
+          location.reload();
         }
       });
     </script>
