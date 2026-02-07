@@ -1,20 +1,12 @@
 ---
 const { id } = Astro.params;
-
-// ✅ Items come from Pages API
-const ITEMS_API = "/api/items";
-
-// ✅ Images go to Worker
-const UPLOAD_API = "https://handmefree-post-item.ehsankarimi27.workers.dev";
-
-// R2 public dev URL
-const R2_BASE = "https://pub-3750308ca5f9464a97ba881a8b7f9734.r2.dev";
+const API = "https://handmefree-post-item.ehsankarimi27.workers.dev";
 
 let item = null;
 let error = null;
 
 try {
-  const res = await fetch(`${ITEMS_API}?id=${id}`);
+  const res = await fetch(`${API}/item?id=${id}`);
   const data = await res.json();
   if (!data.ok) throw new Error();
   item = data.item;
@@ -33,34 +25,20 @@ try {
 
     <hr />
 
-    <h3>Images</h3>
-
-    {item.images && item.images.length > 0 ? (
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
-        {item.images.map((key) => (
-          <img
-            src={`${R2_BASE}/${key}`}
-            width="200"
-            loading="lazy"
-            style="border:1px solid #ccc"
-          />
-        ))}
-      </div>
-    ) : (
-      <p>No images yet</p>
-    )}
-
-    <hr />
-
     <h3>Add an image</h3>
 
-    <form id="uploadForm" data-item-id={id}>
+    <form
+      id="uploadForm"
+      data-item-id={id}
+      data-api={API}
+    >
       <input type="file" name="image" required />
       <button type="submit">Upload image</button>
     </form>
 
     <script>
       const form = document.getElementById("uploadForm");
+      const api = form.dataset.api;
       const itemId = form.dataset.itemId;
 
       form.addEventListener("submit", async (e) => {
@@ -69,20 +47,22 @@ try {
         const fd = new FormData(form);
         fd.append("itemId", itemId);
 
-        const res = await fetch(
-          "https://handmefree-post-item.ehsankarimi27.workers.dev/upload-image",
-          {
-            method: "POST",
-            body: fd,
-          }
-        );
+        const res = await fetch(`${api}/upload-image`, {
+          method: "POST",
+          body: fd,
+        });
+
+        if (!res.ok) {
+          alert("Upload failed (network)");
+          return;
+        }
 
         const data = await res.json();
 
         if (!data.ok) {
-          alert(data.error || "Upload failed");
+          alert("Upload failed (server)");
         } else {
-          location.reload();
+          alert("Image uploaded successfully");
         }
       });
     </script>
