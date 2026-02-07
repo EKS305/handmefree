@@ -1,15 +1,13 @@
 ---
 const { id } = Astro.params;
 
-// ✅ Pages API (items live here)
+// ✅ Items come from Pages API
 const ITEMS_API = "/api/items";
 
-// ✅ Worker API (images live here)
+// ✅ Images go to Worker
 const UPLOAD_API = "https://handmefree-post-item.ehsankarimi27.workers.dev";
 
-/**
- * R2 Public Development URL
- */
+// R2 public dev URL
 const R2_BASE = "https://pub-3750308ca5f9464a97ba881a8b7f9734.r2.dev";
 
 let item = null;
@@ -56,18 +54,13 @@ try {
 
     <h3>Add an image</h3>
 
-    <form
-      id="uploadForm"
-      data-api={UPLOAD_API}
-      data-item-id={id}
-    >
+    <form id="uploadForm" data-item-id={id}>
       <input type="file" name="image" required />
       <button type="submit">Upload image</button>
     </form>
 
     <script>
       const form = document.getElementById("uploadForm");
-      const api = form.dataset.api;
       const itemId = form.dataset.itemId;
 
       form.addEventListener("submit", async (e) => {
@@ -76,10 +69,13 @@ try {
         const fd = new FormData(form);
         fd.append("itemId", itemId);
 
-        const res = await fetch(`${api}/upload-image`, {
-          method: "POST",
-          body: fd,
-        });
+        const res = await fetch(
+          "https://handmefree-post-item.ehsankarimi27.workers.dev/upload-image",
+          {
+            method: "POST",
+            body: fd,
+          }
+        );
 
         const data = await res.json();
 
