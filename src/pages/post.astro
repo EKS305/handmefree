@@ -1,32 +1,23 @@
 ---
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Give something away</title>
-  </head>
-  <body>
-    <h1>Give something away</h1>
+<h1>Give something away</h1>
 
-    <form method="POST" action="/api/post-item">
-      <label>
-        Item title<br />
-        <input name="title" required />
-      </label>
+<form method="POST" action="https://handmefree-post-item.ehsankarimi27.workers.dev">
+  <label>
+    Item title<br />
+    <input name="title" required />
+  </label>
 
-      <br /><br />
+  <br /><br />
 
-      <label>
-        Short description<br />
-        <textarea name="description" required></textarea>
-      </label>
+  <label>
+    Short description<br />
+    <textarea name="description" required></textarea>
+  </label>
 
-      <br /><br />
+  <br /><br />
 
-      <button type="submit">Post item</button>
-    </form>
+  <button type="submit">Post item</button>
+</form>
 
-    <p>Images will be added later.</p>
-  </body>
-</html>
+<p>Images will be added later.</p>
